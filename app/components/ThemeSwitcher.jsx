@@ -58,7 +58,7 @@ export function ThemeSwitcher() {
       <Switch
         isSelected={isSelected}
         onValueChange={handleChange}
-        size="lg"
+        size="sm"
         color="secondary"
         thumbIcon={({ isSelected, className }) =>
           isSelected ? (
