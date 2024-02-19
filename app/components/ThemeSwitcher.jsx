@@ -41,20 +41,17 @@ function MoonIcon() {
 }
 
 export function ThemeSwitcher() {
-  const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
-  const [isSelected, setIsSelected] = useState(true)
+  const [isSelected, setIsSelected] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setIsSelected(theme === 'dark' ? true : false)
+  }, [theme])
 
   const handleChange = () => {
     setIsSelected(theme === 'dark' ? false : true)
     setTheme(theme === 'dark' ? 'light' : 'dark')
   }
-
-  if (!mounted) return null
 
   return (
     <div>
