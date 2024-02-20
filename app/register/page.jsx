@@ -1,5 +1,5 @@
-import { ThemeSwitcher } from '../components/ThemeSwitcher'
-import Form from './Form'
+import { ThemeSwitcher } from '../../components/ThemeSwitcher'
+import Form from './form'
 
 export default function Register() {
   return (
