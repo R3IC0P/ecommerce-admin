@@ -1,6 +1,13 @@
 'use client'
 
-import { Button, Input, Listbox, ListboxItem, User } from '@nextui-org/react'
+import {
+  Button,
+  Divider,
+  Input,
+  Listbox,
+  ListboxItem,
+  User,
+} from '@nextui-org/react'
 import { ThemeSwitcher } from '../components/ThemeSwitcher'
 import {
   MdChat,
@@ -46,6 +53,7 @@ export default function SideMenu() {
         <ListboxItem startContent={<MdHelp />}>Pomoc</ListboxItem>
         <ListboxItem startContent={<MdSettings />}>Ustawienia</ListboxItem>
       </Listbox>
+      <Divider className="bg-neutral-300 dark:bg-neutral-800" />
       <div className="flex justify-between items-center">
         <User name="Łukasz Walukiewicz" description="Programista" />
         <Button isIconOnly variant="light" radius="sm" size="lg">
