@@ -8,7 +8,7 @@ import {
   ListboxItem,
   User,
 } from '@nextui-org/react'
-import { ThemeSwitcher } from '../components/ThemeSwitcher'
+import { ThemeSwitcher } from '../../components/ThemeSwitcher'
 import {
   MdChat,
   MdDashboard,
