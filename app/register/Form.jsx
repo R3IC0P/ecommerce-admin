@@ -1,24 +1,72 @@
 'use client'
 
-import { Button, Checkbox, Input } from '@nextui-org/react'
-import Link from 'next/link'
+import { Button, Chip, Input, Link } from '@nextui-org/react'
+import NextLink from 'next/link'
+import { useMemo, useState } from 'react'
 
 export default function Form() {
+  const [emailValue, setEmailValue] = useState('')
+  const [passwordValue, setPasswordValue] = useState('')
+  const [password2Value, setPassword2Value] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [succes, setSucces] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
+
+  const emailIsInvalid = useMemo(() => {
+    if (emailValue === '') return false
+    const isValidated = emailValue.match(
+      /^[a-z\d]+[\w\d.-]*@(?:[a-z\d]+[a-z\d-]+\.){1,5}[a-z]{2,6}$/i
+    )
+    return isValidated ? false : true
+  }, [emailValue])
+
+  const passwordIsInvalid = useMemo(() => {
+    if (passwordValue === '') return false
+    const isValidated = passwordValue.match(
+      /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
+    )
+    return isValidated ? false : true
+  }, [passwordValue])
+
+  const password2IsInvalid = useMemo(() => {
+    if (password2Value === '') return false
+    const isValidated = password2Value === passwordValue
+    return isValidated ? false : true
+  }, [password2Value, passwordValue])
+
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsProcessing(true)
+    setErrorMessage('')
 
     const formData = new FormData(e.currentTarget)
-    const response = await fetch('/api/auth/register', {
+    const response = await fetch('/api/register', {
       method: 'POST',
       body: JSON.stringify({
         email: formData.get('email'),
         password: formData.get('password'),
       }),
     })
+
+    if (response.status === 500) {
+      setErrorMessage('Wystąpił nieoczekiwany błąd. Spróbuj ponownie')
+      setIsProcessing(false)
+    }
+
+    if (response.status === 409) {
+      setErrorMessage('Konto o podanym adresie email już istnieje')
+      setIsProcessing(false)
+    }
+
+    if (response.ok) {
+      e.target.reset()
+      setSucces(true)
+      setIsProcessing(false)
+    }
   }
 
   return (
-    <form className="w-80 sm:w-96 mx-auto grid gap-5" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="w-80 sm:w-96 mx-auto grid gap-5">
       <h2 className="font-semibold text-2xl">Zarejestruj</h2>
       <p className="text-sm">
         Masz masz konto?
@@ -57,6 +105,9 @@ export default function Form() {
       </div>
 
       <Input
+        onValueChange={setEmailValue}
+        value={emailValue}
+        isInvalid={emailIsInvalid}
         isRequired
         name="email"
         type="email"
@@ -64,8 +115,15 @@ export default function Form() {
         placeholder="Wpisz swój email"
         labelPlacement="outside"
         radius="sm"
+        color={emailIsInvalid ? 'danger' : 'default'}
+        errorMessage={
+          emailIsInvalid && 'Wprowadź poprawny adres email (np. nazwa@nazwa.pl)'
+        }
       />
       <Input
+        onValueChange={setPasswordValue}
+        value={passwordValue}
+        isInvalid={passwordIsInvalid}
         isRequired
         name="password"
         type="password"
@@ -73,8 +131,16 @@ export default function Form() {
         placeholder="Wpisz swoje hasło"
         labelPlacement="outside"
         radius="sm"
+        color={passwordIsInvalid ? 'danger' : 'default'}
+        errorMessage={
+          passwordIsInvalid &&
+          'Hasło musi zawierać co najmniej 8 znaków, duże i małe litery, cyfry i znaki specjalne (np. *, &, $ itp.)'
+        }
       />
       <Input
+        onValueChange={setPassword2Value}
+        value={password2Value}
+        isInvalid={password2IsInvalid}
         isRequired
         name="password2"
         type="password"
@@ -82,9 +148,35 @@ export default function Form() {
         placeholder="Powtórz swoje hasło"
         labelPlacement="outside"
         radius="sm"
+        color={password2IsInvalid ? 'danger' : 'default'}
+        errorMessage={password2IsInvalid && 'Hasła muszą być takie same'}
       />
-
-      <Button type="submit" color="primary" className="mt-5 font-semibold">
+      {errorMessage ? (
+        <p className="p-3 rounded-md text-neutral-50 bg-danger">
+          {errorMessage}
+        </p>
+      ) : (
+        ''
+      )}
+      {succes ? (
+        <p className="p-3 rounded-md bg-success dark:bg-success-300">
+          Zarejestrowano pomyślnie. Możesz się teraz{' '}
+          <Link
+            as={NextLink}
+            href={'/login'}
+            underline="always"
+            className="text-current font-semibold">
+            zalogować
+          </Link>
+        </p>
+      ) : (
+        ''
+      )}
+      <Button
+        type="submit"
+        color="primary"
+        className="mt-5 font-semibold"
+        isLoading={isProcessing}>
         Zarejestruj
       </Button>
     </form>
