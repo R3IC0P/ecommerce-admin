@@ -5,39 +5,39 @@ import NextLink from 'next/link'
 import { useMemo, useState } from 'react'
 
 export default function Form() {
-  const [emailValue, setEmailValue] = useState('')
-  const [passwordValue, setPasswordValue] = useState('')
-  const [password2Value, setPassword2Value] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('')
+  const [error, setError] = useState('')
   const [succes, setSucces] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
 
   const emailIsInvalid = useMemo(() => {
-    if (emailValue === '') return false
-    const isValidated = emailValue.match(
+    if (email === '') return false
+    const isValidated = email.match(
       /^[a-z\d]+[\w\d.-]*@(?:[a-z\d]+[a-z\d-]+\.){1,5}[a-z]{2,6}$/i
     )
     return isValidated ? false : true
-  }, [emailValue])
+  }, [email])
 
   const passwordIsInvalid = useMemo(() => {
-    if (passwordValue === '') return false
-    const isValidated = passwordValue.match(
+    if (password === '') return false
+    const isValidated = password.match(
       /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
     )
     return isValidated ? false : true
-  }, [passwordValue])
+  }, [password])
 
   const password2IsInvalid = useMemo(() => {
-    if (password2Value === '') return false
-    const isValidated = password2Value === passwordValue
+    if (password2 === '') return false
+    const isValidated = password2 === password
     return isValidated ? false : true
-  }, [password2Value, passwordValue])
+  }, [password2, password])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsProcessing(true)
-    setErrorMessage('')
+    setError('')
 
     const formData = new FormData(e.currentTarget)
     const response = await fetch('/api/register', {
@@ -49,12 +49,12 @@ export default function Form() {
     })
 
     if (response.status === 500) {
-      setErrorMessage('Wystąpił nieoczekiwany błąd. Spróbuj ponownie')
+      setError('Wystąpił nieoczekiwany błąd. Spróbuj ponownie')
       setIsProcessing(false)
     }
 
     if (response.status === 409) {
-      setErrorMessage('Konto o podanym adresie email już istnieje')
+      setError('Konto o podanym adresie email już istnieje')
       setIsProcessing(false)
     }
 
@@ -105,8 +105,8 @@ export default function Form() {
       </div>
 
       <Input
-        onValueChange={setEmailValue}
-        value={emailValue}
+        onValueChange={setEmail}
+        value={email}
         isInvalid={emailIsInvalid}
         isRequired
         name="email"
@@ -121,8 +121,8 @@ export default function Form() {
         }
       />
       <Input
-        onValueChange={setPasswordValue}
-        value={passwordValue}
+        onValueChange={setPassword}
+        value={password}
         isInvalid={passwordIsInvalid}
         isRequired
         name="password"
@@ -138,8 +138,8 @@ export default function Form() {
         }
       />
       <Input
-        onValueChange={setPassword2Value}
-        value={password2Value}
+        onValueChange={setPassword2}
+        value={password2}
         isInvalid={password2IsInvalid}
         isRequired
         name="password2"
@@ -151,10 +151,8 @@ export default function Form() {
         color={password2IsInvalid ? 'danger' : 'default'}
         errorMessage={password2IsInvalid && 'Hasła muszą być takie same'}
       />
-      {errorMessage ? (
-        <p className="p-3 rounded-md text-neutral-50 bg-danger">
-          {errorMessage}
-        </p>
+      {error ? (
+        <p className="p-3 rounded-md text-neutral-50 bg-danger">{error}</p>
       ) : (
         ''
       )}
