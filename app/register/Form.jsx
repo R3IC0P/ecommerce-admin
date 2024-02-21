@@ -39,7 +39,6 @@ export default function Form() {
     setIsProcessing(true)
     setError('')
 
-    const formData = new FormData(e.currentTarget)
     const response = await fetch('/api/register', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
