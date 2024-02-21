@@ -42,10 +42,7 @@ export default function Form() {
     const formData = new FormData(e.currentTarget)
     const response = await fetch('/api/register', {
       method: 'POST',
-      body: JSON.stringify({
-        email: formData.get('email'),
-        password: formData.get('password'),
-      }),
+      body: JSON.stringify({ email, password }),
     })
 
     if (response.status === 500) {
