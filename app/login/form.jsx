@@ -6,15 +6,15 @@ import { signIn } from 'next-auth/react'
 import { useMemo, useState } from 'react'
 
 export default function Form() {
-  const [emailValue, setEmailValue] = useState('')
+  const [email, setEmail] = useState('')
 
   const emailIsInvalid = useMemo(() => {
-    if (emailValue === '') return false
-    const isValidated = emailValue.match(
+    if (email === '') return false
+    const isValidated = email.match(
       /^[a-z\d]+[\w\d.-]*@(?:[a-z\d]+[a-z\d-]+\.){1,5}[a-z]{2,6}$/i
     )
     return isValidated ? false : true
-  }, [emailValue])
+  }, [email])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -74,8 +74,8 @@ export default function Form() {
       </div>
 
       <Input
-        onValueChange={setEmailValue}
-        value={emailValue}
+        onValueChange={setEmail}
+        value={email}
         isInvalid={emailIsInvalid}
         isRequired
         name="email"
