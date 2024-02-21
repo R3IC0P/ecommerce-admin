@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react'
 
 export default function Form() {
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const emailIsInvalid = useMemo(() => {
     if (email === '') return false
@@ -19,13 +20,9 @@ export default function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const formData = new FormData(e.target)
     const response = await fetch('/api/auth/login', {
       method: 'POST',
-      body: JSON.stringify({
-        email: formData.get('email'),
-        password: formData.get('password'),
-      }),
+      body: JSON.stringify({ email, password }),
     })
 
     console.log({ response })
@@ -104,7 +101,11 @@ export default function Form() {
           Zapomniałeś hasła?
         </Link>
       </div>
-
+      {error ? (
+        <p className="p-3 rounded-md text-neutral-50 bg-danger">{error}</p>
+      ) : (
+        ''
+      )}
       <Button type="submit" color="primary" className="mt-5 font-semibold">
         Zaloguj
       </Button>
