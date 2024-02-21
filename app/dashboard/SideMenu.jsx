@@ -22,6 +22,7 @@ import {
   MdTask,
   MdWarehouse,
 } from 'react-icons/md'
+import { signOut } from 'next-auth/react'
 
 export default function SideMenu() {
   return (
@@ -56,7 +57,12 @@ export default function SideMenu() {
       <Divider className="bg-neutral-300 dark:bg-neutral-800" />
       <div className="flex justify-between items-center">
         <User name="Łukasz Walukiewicz" description="Programista" />
-        <Button isIconOnly variant="light" radius="sm" size="lg">
+        <Button
+          onClick={() => signOut()}
+          isIconOnly
+          variant="light"
+          radius="sm"
+          size="lg">
           <MdLogout />
         </Button>
       </div>
