@@ -1,6 +1,6 @@
 import { auth } from '@/auth'
-import SideMenu from './SideMenu'
 import Topbar from './Topbar'
+import SideBar from './SideBar'
 
 export default async function DashboardLayout({ children }) {
   const session = await auth()
@@ -11,8 +11,8 @@ export default async function DashboardLayout({ children }) {
   }
 
   return (
-    <div className="flex h-full">
-      <SideMenu userData={userData} />
+    <div className="grid grid-cols-[auto_1fr] h-full">
+      <SideBar userData={userData} />
       <div className="px-10 py-7">
         <Topbar />
         <main>{children}</main>
