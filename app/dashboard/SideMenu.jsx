@@ -41,14 +41,26 @@ export default function SideMenu({ userData }) {
       />
       <Listbox itemClasses={{ base: 'py-2' }} aria-label="menu">
         <ListboxItem startContent={<MdHome />}>Home</ListboxItem>
-        <ListboxItem startContent={<MdDashboard />}>Panel</ListboxItem>
-        <ListboxItem startContent={<MdOutlineShoppingCart />}>
+        <ListboxItem href="/dashboard" startContent={<MdDashboard />}>
+          Panel
+        </ListboxItem>
+        <ListboxItem
+          href="/dashboard/orders"
+          startContent={<MdOutlineShoppingCart />}>
           Zamówienia
         </ListboxItem>
-        <ListboxItem startContent={<MdWarehouse />}>Magazyn</ListboxItem>
-        <ListboxItem startContent={<MdTask />}>Zadania</ListboxItem>
-        <ListboxItem startContent={<MdChat />}>Wiadomości</ListboxItem>
-        <ListboxItem startContent={<MdPerson />}>Użytkownicy</ListboxItem>
+        <ListboxItem href="/dashboard/warehouse" startContent={<MdWarehouse />}>
+          Magazyn
+        </ListboxItem>
+        <ListboxItem href="/dashboard/tasks" startContent={<MdTask />}>
+          Zadania
+        </ListboxItem>
+        <ListboxItem href="/dashboard/messages" startContent={<MdChat />}>
+          Wiadomości
+        </ListboxItem>
+        <ListboxItem href="/dashboard/users" startContent={<MdPerson />}>
+          Użytkownicy
+        </ListboxItem>
       </Listbox>
       <Listbox className="mt-auto" aria-label="menu2">
         <ListboxItem startContent={<MdHelp />}>Pomoc</ListboxItem>
