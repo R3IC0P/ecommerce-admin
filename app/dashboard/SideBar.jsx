@@ -24,7 +24,7 @@ import {
 } from 'react-icons/md'
 import { signOut } from 'next-auth/react'
 
-export default function SideMenu({ userData }) {
+export default function SideBar({ userData }) {
   return (
     <aside className="flex flex-col gap-5 h-full w-60 p-5 bg-neutral-50 border border-neutral-300 dark:bg-neutral-950 dark:border-neutral-800">
       <div className="flex items-center justify-between">
