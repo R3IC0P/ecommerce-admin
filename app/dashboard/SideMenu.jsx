@@ -24,7 +24,7 @@ import {
 } from 'react-icons/md'
 import { signOut } from 'next-auth/react'
 
-export default function SideMenu() {
+export default function SideMenu({ userData }) {
   return (
     <aside className="flex flex-col gap-5 h-full w-60 p-5 bg-neutral-50 border border-neutral-300 dark:bg-neutral-950 dark:border-neutral-800">
       <div className="flex items-center justify-between">
@@ -56,7 +56,11 @@ export default function SideMenu() {
       </Listbox>
       <Divider className="bg-neutral-300 dark:bg-neutral-800" />
       <div className="flex justify-between items-center">
-        <User name="Łukasz Walukiewicz" description="Programista" />
+        <User
+          name={userData.name}
+          description={userData.position}
+          avatarProps={{ src: userData.image }}
+        />
         <Button
           onClick={() => signOut()}
           isIconOnly
