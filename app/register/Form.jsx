@@ -17,7 +17,11 @@ export default function Form() {
     const isValidated = email.match(
       /^[a-z\d]+[\w\d.-]*@(?:[a-z\d]+[a-z\d-]+\.){1,5}[a-z]{2,6}$/i
     )
-    return isValidated ? false : true
+    if (isValidated) {
+      setError('')
+      return false
+    }
+    return true
   }, [email])
 
   const passwordIsInvalid = useMemo(() => {
@@ -25,19 +29,32 @@ export default function Form() {
     const isValidated = password.match(
       /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
     )
-    return isValidated ? false : true
+    if (isValidated) {
+      setError('')
+      return false
+    }
+    return true
   }, [password])
 
   const password2IsInvalid = useMemo(() => {
     if (password2 === '') return false
     const isValidated = password2 === password
-    return isValidated ? false : true
+    if (isValidated) {
+      setError('')
+      return false
+    }
+    return true
   }, [password2, password])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (emailIsInvalid || passwordIsInvalid || password2IsInvalid) {
+      setError('Wprowadź poprawne dane')
+      return
+    }
+
     setIsProcessing(true)
-    setError('')
 
     const response = await fetch('/api/register', {
       method: 'POST',
@@ -46,19 +63,18 @@ export default function Form() {
 
     if (response.status === 500) {
       setError('Wystąpił nieoczekiwany błąd. Spróbuj ponownie')
-      setIsProcessing(false)
     }
 
-    if (response.status === 409) {
+    if (response.status === 400) {
       setError('Konto o podanym adresie email już istnieje')
-      setIsProcessing(false)
     }
 
     if (response.ok) {
       e.target.reset()
+      setError('')
       setSucces(true)
-      setIsProcessing(false)
     }
+    setIsProcessing(false)
   }
 
   return (
@@ -103,7 +119,6 @@ export default function Form() {
       <Input
         onValueChange={setEmail}
         value={email}
-        isInvalid={emailIsInvalid}
         isRequired
         name="email"
         type="email"
@@ -111,7 +126,6 @@ export default function Form() {
         placeholder="Wpisz swój email"
         labelPlacement="outside"
         radius="sm"
-        color={emailIsInvalid ? 'danger' : 'default'}
         errorMessage={
           emailIsInvalid && 'Wprowadź poprawny adres email (np. nazwa@nazwa.pl)'
         }
@@ -119,7 +133,6 @@ export default function Form() {
       <Input
         onValueChange={setPassword}
         value={password}
-        isInvalid={passwordIsInvalid}
         isRequired
         name="password"
         type="password"
@@ -127,7 +140,6 @@ export default function Form() {
         placeholder="Wpisz swoje hasło"
         labelPlacement="outside"
         radius="sm"
-        color={passwordIsInvalid ? 'danger' : 'default'}
         errorMessage={
           passwordIsInvalid &&
           'Hasło musi zawierać co najmniej 8 znaków, duże i małe litery, cyfry i znaki specjalne (np. *, &, $ itp.)'
@@ -136,7 +148,6 @@ export default function Form() {
       <Input
         onValueChange={setPassword2}
         value={password2}
-        isInvalid={password2IsInvalid}
         isRequired
         name="password2"
         type="password"
@@ -144,7 +155,6 @@ export default function Form() {
         placeholder="Powtórz swoje hasło"
         labelPlacement="outside"
         radius="sm"
-        color={password2IsInvalid ? 'danger' : 'default'}
         errorMessage={password2IsInvalid && 'Hasła muszą być takie same'}
       />
       {error ? (
