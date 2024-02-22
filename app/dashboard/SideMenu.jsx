@@ -63,8 +63,12 @@ export default function SideMenu({ userData }) {
         </ListboxItem>
       </Listbox>
       <Listbox className="mt-auto" aria-label="menu2">
-        <ListboxItem startContent={<MdHelp />}>Pomoc</ListboxItem>
-        <ListboxItem startContent={<MdSettings />}>Ustawienia</ListboxItem>
+        <ListboxItem href="/dashboard/help" startContent={<MdHelp />}>
+          Pomoc
+        </ListboxItem>
+        <ListboxItem href="/dashboard/settings" startContent={<MdSettings />}>
+          Ustawienia
+        </ListboxItem>
       </Listbox>
       <Divider className="bg-neutral-300 dark:bg-neutral-800" />
       <div className="flex justify-between items-center">
