@@ -83,7 +83,6 @@ export default function Form() {
       <Input
         onValueChange={setEmail}
         value={email}
-        isInvalid={emailIsInvalid}
         isRequired
         name="email"
         type="email"
@@ -91,7 +90,6 @@ export default function Form() {
         placeholder="Wpisz swój email"
         labelPlacement="outside"
         radius="sm"
-        color={emailIsInvalid ? 'danger' : 'default'}
         errorMessage={
           emailIsInvalid && 'Wprowadź poprawny adres email (np. nazwa@nazwa.pl)'
         }
