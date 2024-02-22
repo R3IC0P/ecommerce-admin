@@ -4,10 +4,14 @@ import { Button, Checkbox, Input } from '@nextui-org/react'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Form() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+
+  const router = useRouter()
 
   const emailIsInvalid = useMemo(() => {
     if (email === '') return false
@@ -20,12 +24,18 @@ export default function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
+    const result = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
     })
 
-    console.log({ response })
+    if (result.error) {
+      setError('Niepoprawny adres email lub hasło')
+      return
+    }
+
+    router.push('dashboard')
   }
 
   return (
@@ -87,6 +97,8 @@ export default function Form() {
         }
       />
       <Input
+        onValueChange={setPassword}
+        value={password}
         isRequired
         name="password"
         type="password"
