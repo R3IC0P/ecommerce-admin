@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { hash } from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { connectMongoDB } from '@/lib/mongoose'
 import User from '@/models/user'
 
@@ -14,12 +14,19 @@ export async function POST(request) {
     if (user) {
       return NextResponse.json(
         { message: 'User already exists' },
-        { status: 409 }
+        { status: 400 }
       )
     }
 
-    const hashedPassword = await hash(password, 10)
-    await User.create({ name, email, password: hashedPassword })
+    const hashedPassword = await bcrypt.hash(password, 10)
+    await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      position: 'magazynier',
+      rule: 'USER',
+      image: '',
+    })
 
     return NextResponse.json({ message: 'User registered' }, { status: 201 })
   } catch (error) {
