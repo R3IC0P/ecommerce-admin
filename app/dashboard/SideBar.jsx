@@ -21,6 +21,7 @@ import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import mathcIcons from '@/utils/matchIcons'
 import matchNames from '@/utils/matchNames'
+import Link from 'next/link'
 
 export default function Sidebar({ userData }) {
   const [active, setActive] = useState(false)
@@ -91,11 +92,13 @@ export default function Sidebar({ userData }) {
       </Listbox>
       <Divider className="bg-neutral-300 dark:bg-neutral-800" />
       <div className="flex justify-between items-center">
-        <User
-          name={userData.name}
-          description={userData.position}
-          avatarProps={{ src: userData.image }}
-        />
+        <Link href={'/dashboard/users/profile#settings'}>
+          <User
+            name={userData.name}
+            description={userData.position}
+            avatarProps={{ src: userData.image }}
+          />
+        </Link>
         <Button
           onClick={() => signOut()}
           isIconOnly
