@@ -8,6 +8,7 @@ export default function matchNames(siteName) {
     tasks: 'Zadania',
     users: 'Użytkownicy',
     warehouse: 'Magazyn',
+    profile: 'Profil',
   }
   return siteNames[siteName]
 }
