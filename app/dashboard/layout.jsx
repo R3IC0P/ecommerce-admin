@@ -17,7 +17,7 @@ export default async function DashboardLayout({ children }) {
         <div className="h-10 border border-neutral-300 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 lg:hidden"></div>
         <div className="px-10 py-7">
           <Topbar />
-          <main>{children}</main>
+          <main className="mt-5">{children}</main>
         </div>
       </div>
     </div>
